@@ -75,6 +75,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://{username}:{password}@{hos
     )
 ```
 Replace `<username>`, `<password>`, and `<port>` with the actual configuration of your database.
+If you are not sure about `<port>` and don't recall changing such a value during initial setup or launching of PostgreSQL server, then it should be `5432` by default.
 
 To run the web service, you must navigate to the `app` directory and run the following command:
 
@@ -105,11 +106,11 @@ These few lines define the port to run the web server.
 If you change the port number to `5001`, the message shown at earlier stage will be changed accordingly.
 For this walk-through (and also the CS2102 project), there is no need to change these settings.
 
-To access the web server, open your favorite web browser (Chrome, Firefox, IE, etc) and enter the following into the address bar:
+To access the web server, open your favorite web browser (Chrome, Firefox, IE, etc) and enter `localhost:5000/` in the address bar.
 
-`localhost:5000/`
+Press `Enter` then the page below should show up.
 
-The page below should show up.
+`<index page>`
 
 The logic for showing this web page can be found in `views.py`, specifically, these few lines:
 
@@ -121,6 +122,8 @@ def show_index():
 
 Notice that `localhost:5000` comes from `app.py` setting, and the extra `/` comes from the URL routing mapping in `views.py`.
 The web page you are seeing is a rendered HTML file from `index.html` in `templates` folder.
+You can drop any `html` files into the same folder for usage. 
+Additionally, `Flask` has its own syntax support for writing `html` templates which are rendered on-the-fly. Refer to `log-in.html` and `sign-up.html` for examples.
 
 Switch back to the browser and go to sign-up page like below
 (hint: take a look at other URL routing and try to figure out the URL address for sign-up page by yourself).
