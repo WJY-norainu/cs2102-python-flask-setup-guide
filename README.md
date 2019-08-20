@@ -25,33 +25,21 @@ The packages needed to run the scripts provided in this guide can be downloaded 
 
 `pip3 install -r requirements.txt`
 
-The most important packages for this tutorial will be `Flask` and `SQLAlchemy`.
+Here is a list of flask-related packages and its main usages:
+* flask
+    * This package handles routing, request handling and HTML template rendering.
+* flask-bootstrap
+    * This package provides web page style utilities.
+* flask-login
+    * This package provides login-related utility functions.
+* flask-sqlalchemy
+    * This package provides ORM classes that connect the Flask App to database,
+    and thus allow you to execute SQL queries in your App.
+* flask-wtf
+    * This package handles form submission and pass user-entered values into Python objects.
+    It also provides other utilities such as validation checks on user-entered fields.
 
-#### Flask
-
-Flask is a lightweight package that...
-
-##### flask
-This package handles routing, request handling and HTML template rendering.
-
-##### flask-bootstrap
-This package provides web page style utilities.
-
-##### flask-login
-This package provides login-related utility functions.
-
-##### flask-sqlalchemy
-This package provides ORM classes that connect the Flask App to database,
-and thus allow you to execute SQL queries in your App.
-
-##### flask-wtf
-This package handles form submission at client side and serialization at server side.
-
-For example, when users sign up, they will provide certain information like username and password.
-This package provides a class that can display a table on the web page for users to enter such information,
-and then store such user-entered information into Python variables.
-
-This package also helps perform validation check on user-entered fields.
+Note that it is fully compatible with normal `html`, `css` and `javascript` files.
 
 ### Pycharm (optional)
 Pycharm is a popular IDE for Python.
@@ -97,7 +85,7 @@ You should see some messages showing up in your terminal, with these last few li
 ```
  * Debugger is active!
  * Debugger PIN: 215-554-995
- * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Running on http://localhost:5000/ (Press CTRL+C to quit)
 
 ```
 There may be warnings for SQLAlchemy but you can ignore those.
@@ -114,7 +102,7 @@ if __name__ == "__main__":
 ```
 
 These few lines define the port to run the web server.
-If you change the port number to 5001, the message shown at earlier stage will be changed accordingly.
+If you change the port number to `5001`, the message shown at earlier stage will be changed accordingly.
 For this walk-through (and also the CS2102 project), there is no need to change these settings.
 
 To access the web server, open your favorite web browser (Chrome, Firefox, IE, etc) and enter the following into the address bar:
@@ -132,24 +120,36 @@ def show_index():
 ```
 
 Notice that `localhost:5000` comes from `app.py` setting, and the extra `/` comes from the URL routing mapping in `views.py`.
+The web page you are seeing is a rendered HTML file from `index.html` in `templates` folder.
 
-The HTML template being rendered in the code is in `templates` folder.
+Switch back to the browser and go to sign-up page like below
+(hint: take a look at other URL routing and try to figure out the URL address for sign-up page by yourself).
 
-Switch back to the browser and go to sign-up page 
-(hint: try to figure out what to enter in address bar yourself).
+`<sign-up page>`
 
-Enter the relevant information and click the button to sign up.
+Without entering any information, click `submit`.
+Sign-up should fail and you should see compulsory fields getting highlighted like below:
 
-Now you should see the following message.
+`<sign-up page with error msg>`
 
-Switch back to `psql` console and run the following command:
+Now enter the relevant information and click `submit` again.
+Sign-up should succeed and you should see a page with success message.
 
-``
+Switch to `psql` console and run the following command:
 
-The information you just entered has been inserted into the database.
+`SELECT * FROM sample_user`
 
+You should see that the information entered has been inserted into the database.
 
+Switch to your browser again and this time open log-in page, which should look like below:
 
-When you are done, close the browser and terminate web service by pressing `CTRL+C` in the terminal that's running the service.
+`<log-in page>`
+
+Observe what happens when you:
+* try to log in without any information entered
+* try to log in with a non-existing name
+* try to log in with an existing name
+
+When you are done, close the browser and stop web server by pressing `CTRL+C` in the terminal running it.
 
 ## Additional Information
