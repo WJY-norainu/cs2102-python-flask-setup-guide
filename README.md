@@ -2,7 +2,14 @@
 
 This guide provides a walk-through of python web development setup.
 
-## Toolkits
+## Toolkit
+
+### Browser
+This guide contains screenshots taken from Firefox browser,
+but it should work for any other commonly-used browser.
+There may be some minor differences in terms of alignments and element rendering,
+so it is encouraged that once you decided to use a browser for testing, stick to it
+all the way and standardize across the team.
 
 ### PostgreSQL
 This guide assumes PostgreSQL has already been installed. If not, follow the separate installation guide for it to set up PostgreSQL.
@@ -161,3 +168,7 @@ When you are done, close the browser and stop web server by pressing `CTRL+C` in
 * how to use Bootstrap template in flask project
 * flask session
 * 
+
+## Acknowledgement
+
+The templates used in this guide are modified from the ones listed [here](https://colorlib.com/wp/free-bootstrap-registration-forms/).
