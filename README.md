@@ -28,8 +28,6 @@ The packages needed to run the scripts provided in this guide can be downloaded 
 Here is a list of flask-related packages and its main usages:
 * flask
     * This package handles routing, request handling and HTML template rendering.
-* flask-bootstrap
-    * This package provides web page style utilities.
 * flask-login
     * This package provides login-related utility functions.
 * flask-sqlalchemy
@@ -52,6 +50,8 @@ Also, you will need to deal with other file types (html, css etc) so using Pycha
 This should be the directory structure of this guide:
 * cs2102-python-flask-setup-guide/
     * FlaskApp/
+        * static/
+            * <css, js, img, etc...>
         * templates/
             * index.html
         * app.py
@@ -149,10 +149,15 @@ Switch to your browser again and this time open log-in page, which should look l
 `<log-in page>`
 
 Observe what happens when you:
-* try to log in without any information entered
+* try to log in without entering any information
 * try to log in with a non-existing name
-* try to log in with an existing name
+* try to log in with an existing name but wrong password
+* try to log in with an existing name and correct password
 
 When you are done, close the browser and stop web server by pressing `CTRL+C` in the terminal running it.
 
 ## Additional Information
+
+* how to use Bootstrap template in flask project
+* flask session
+* 
