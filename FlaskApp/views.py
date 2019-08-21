@@ -21,15 +21,17 @@ def show_index():
 @view.route('/signUp', methods=['GET', 'POST'])
 def show_sign_up():
     form = SignUpForm()
+    print(form.name.data)
     if form.validate_on_submit():
-        name = form.name.data[0]
-        preferred_name = form.preferred_name.data[0]
+        name = form.name.data
+        preferred_name = form.preferred_name.data
+        password = form.password.data
         exists_user = login_user(name)
         if exists_user:
             return '''{} has already signed up.'''.format(name)
         else:
-            query = '''INSERT INTO sample_table(name, preferred_name) VALUES ("{}", "{}")'''\
-                .format(name, preferred_name)
+            query = '''INSERT INTO sample_table(name, preferred_name) VALUES ("{}", "{}", "{}")'''\
+                .format(name, preferred_name, password)
             db.session.execute(query)
             db.session.commit()
             return '''You have successfully signed up!'''
@@ -41,7 +43,7 @@ def show_sign_up():
 def show_login():
     form = LogInForm()
     if form.validate_on_submit():
-        name = form.name.data[0]
+        name = form.name.data
         exists_user = login_user(name)
         if exists_user:
             return redirect('/logInSuccess')
