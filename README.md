@@ -13,8 +13,7 @@ Nevertheless, being able to build static web pages is enough for this project.
 ## Toolkit Installation
 
 ### Browser
-This guide contains screenshots taken from Firefox browser,
-but it should work for any other commonly-used browser.
+This guide contains screenshots taken from Chrome but it should work for any other commonly-used browser.
 There may be some minor differences in terms of alignments and element rendering,
 so it is encouraged that once you decided to use a browser for testing, stick to it
 all the way and standardize across the team.
@@ -424,7 +423,7 @@ On the other hand, users who have logged in will be able to access the URL. Henc
 when he or she has successfully logged in. An example has already been provided in `views.py`. You can find by searching `load_user`.
 
 This is where `WebUser` we defined earlier becomes important, as `flask-login` requires the model class that represents the current user 
-must implement certain class attributes and methods.
+to implement certain class attributes and methods.
 
 For more information, you can look up [flask-login documentation](https://flask-login.readthedocs.io/en/latest/).
 
