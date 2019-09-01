@@ -47,7 +47,7 @@ def render_login_page():
         print("username entered:", form.username.data)
         print("password entered:", form.password.data)
     if form.validate_on_submit():
-        user = WebUser.query.filter_by(username=form.username.data)
+        user = WebUser.query.filter_by(username=form.username.data).first()
         if user:
             # TODO: You may want to verify if password is correct
             login_user(user)

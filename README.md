@@ -1,6 +1,8 @@
 # CS2102 Python Flask Setup Guide
 
-The objective of this guide is to let you start with your first database project using Windows. 
+You can read this guide and clone the files from its github repo [here](https://github.com/WJY-norainu/cs2102-python-flask-setup-guide).
+
+The objective of this guide is to help you start with your first database project. 
 This guide uses Flask + PostgreSQL for back-end and Bootstrap for styling at the front-end. 
 You are welcomed to use any other back-end/front-end pairs of your choosing. 
 We recommend Flask framework if you would like to program in Python. 
@@ -93,6 +95,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://{username}:{password}@{hos
 Replace `<username>`, `<password>`, `<port>`, and `<database_name>` with the actual configuration from your database.
 If you are not sure about `<port>` and don't recall changing such a value during initial setup or launching of PostgreSQL server, then it should be `5432` by default.
 
+### Start web app and handle routing
 To run the web service, you must navigate to the `FlaskApp` directory and run the following command:
 
 `python app.py`
@@ -122,7 +125,6 @@ These few lines define the host and port to run the web server.
 If you change the port number to `5001`, the message shown at earlier stage will be changed accordingly.
 For this walk-through (and also the CS2102 project), there is no need to change these settings.
 
-### Start web app and handle routing
 To access the web server, open your favorite web browser (Chrome, Firefox, IE, etc) and enter `localhost:5000/` in the address bar.
 
 Press `Enter` then the page below should show up.
@@ -174,7 +176,6 @@ If you are more comfortable with manipulating python built-in types, you can con
 
 ```
 result = [r for r in result]
-
 ```
 
 There is another way to interact with database without making explicit SQL queries. 
@@ -185,7 +186,7 @@ Such classes are usually called "models" and you can find an example of such cla
 class WebUser(db.Model):
     username = db.Column(db.String, primary_key=True)
     preferred_name = db.Column(db.String, nullable=True)
-    password = db.Coloumn(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
 ```
 
 You can compare this class with the actual table, `web_user`, to find out how they map to each other. 
@@ -193,20 +194,20 @@ You can compare this class with the actual table, `web_user`, to find out how th
 With this class, the following codes can achieve the same purpose:
 ```
 # Create new user with plain SQL query
-insert_query = "INSERT INTO web_user VALUES('sample_username', NULL, 'sample_password')"
+insert_query = "INSERT INTO web_user VALUES('sample', NULL, 'sample')"
 db.session.execute(insert_query)
 db.session.commit()
 # Create new user with WebUser model
-new_web_user = WebUser("sample_username", None, "sample_password")
+new_web_user = WebUser("sample", None, "sample")
 db.session.add(nwe_web_user)
 db.session.commit()
 
-# Get user with username 'sample_username' with plain SQL query
+# Get user with username 'sample' with plain SQL query
 # Note that using this method, you will get a single tuple representing the result instead of WebUser instance
-sample_user = db.session.execute("SELECT * FROM web_user WHERE username='sample_username'").fetchone()
-# Get user with username 'sample_username' with WebUser model
+sample_user = db.session.execute("SELECT * FROM web_user WHERE username='sample'").fetchone()
+# Get user with username 'sample' with WebUser model
 # Note that using this method, you will get a WebUser instance that represents the given record
-sample_user = WebUser.query.filter_by(username='sample_username').first()
+sample_user = WebUser.query.filter_by(username='sample').first()
 ```
 
 Although it is possible to set up the whole database using these classes, doing so defeats the purpose of learning SQL in CS2102. 
@@ -293,6 +294,17 @@ If you want to know what's the actual rendered `html` like, you can right click 
 
 Observe what happens when you try to enter invalid inputs into the fields and submit. Try to trace back the behaviour from the codes as well.
 
+Before proceeding, register a new user with the following credentials:
+```
+username: sample
+password: sample
+```
+It will be used again to test login later.
+
+After you register successfully, you should see the following page:
+
+![successful-sign-up-screenshot](Screenshots/successful-registration.png)
+
 ### Add stylesheets and other static files
 This simple web page also uses `css` stylesheet, as you may have found out from these few lines in `registration-simple.html`:
 
@@ -332,11 +344,12 @@ After:
 <div class="container-login100" style="background-image: url('static/images/bg-01.jpg');">
 ```
 
-Add the following lines to add routing to this new page to `views.py`:
+The codes needed to route to this page and render `html` have already been provided in `views.py` as below:
 
 ```
 @view.route("/login", methods=["GET", "POST"])
 def render_login_page():
+    ...
     return render_template("index.html")
 ```
 
@@ -345,7 +358,7 @@ and then enter `localhost:5000/login` in browser address bar. You should see thi
 
 ![login-page-screenshot](Screenshots/login-page.png)
 
-After ensuring the original `html` file can be shown, we need to make changes to `index.html` to integrate `LoginForm` into it.
+After ensuring the page can be shown correctly, you need to make changes to `index.html` to integrate `LoginForm` into it.
 
 Locate `LoginForm` in `forms.py` and observe the `render_kw` line:
 
@@ -395,19 +408,6 @@ With:
 <button class="login100-form-btn" formmethod="post">
 ```
 
-Then modify `views.py` to feed `LoginForm` instance into template rendering:
-
-```
-@view.route("/login", methods=["GET", "POST"])
-def render_login_page():
-    form = LoginForm()
-    if form.is_submitted():
-        print(form.username.data)
-        print(form.password.data)
-    ...
-    return render_template("index.html", form=form)
-```
-
 Restart the web app and navigate to login page. The same page should show up but this time, you can enter some information 
 in the two fields and submit. The information you entered should be printed out in the console or terminal that's running 
 the web app.
@@ -426,6 +426,20 @@ This is where `WebUser` we defined earlier becomes important, as `flask-login` r
 to implement certain class attributes and methods.
 
 For more information, you can look up [flask-login documentation](https://flask-login.readthedocs.io/en/latest/).
+
+Now attempt to login with the account created earlier on:
+```
+username: sample
+password: <anything because the provided script doesn't check if password is correct>
+```
+
+You should see the following page:
+
+![privileged-page-screenshot](Screenshots/privileged-page.png)
+
+## Final Notes
+
+If you find any bug or problem with this guide, please report to the teaching team or submit an issue on github.
 
 ## Additional Information
 
