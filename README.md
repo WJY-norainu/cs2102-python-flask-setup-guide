@@ -305,6 +305,11 @@ After you register successfully, you should see the following page:
 
 ![successful-sign-up-screenshot](Screenshots/successful-registration.png)
 
+You can verify if this account is in the database by running SQL query:
+```
+SELECT * FROM web_user WHERE username='sample'
+```
+
 ### Add stylesheets and other static files
 This simple web page also uses `css` stylesheet, as you may have found out from these few lines in `registration-simple.html`:
 
