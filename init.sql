@@ -1,6 +1,5 @@
-CREATE DATABASE sample_database;
-
-CREATE TABLE sample_table(
-    name VARCHAR PRIMARY KEY NOT NULL,
-    preferred_name VARCHAR
+CREATE TABLE web_user(
+    username VARCHAR PRIMARY KEY NOT NULL,
+    preferred_name VARCHAR,
+    password VARCHAR NOT NULL
 );
