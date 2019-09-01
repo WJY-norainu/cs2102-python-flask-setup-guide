@@ -1,8 +1,6 @@
 from flask import Blueprint, redirect, render_template
 from flask_login import current_user, login_required, login_user
 
-from random import choice, randint
-
 from __init__ import db, login_manager
 from forms import LoginForm, RegistrationForm
 from models import WebUser
@@ -29,12 +27,12 @@ def render_registration_page():
         username = form.username.data
         preferred_name = form.preferred_name.data
         password = form.password.data
-        query = "SELECT * FROM sample_table WHERE name = '{}'".format(username)
+        query = "SELECT * FROM web_user WHERE username = '{}'".format(username)
         exists_user = db.session.execute(query).fetchone()
         if exists_user:
             form.username.errors.append("{} is already in use.".format(username))
         else:
-            query = "INSERT INTO sample_table(name, preferred_name, password) VALUES ('{}', '{}', '{}')"\
+            query = "INSERT INTO web_user(username, preferred_name, password) VALUES ('{}', '{}', '{}')"\
                 .format(username, preferred_name, password)
             db.session.execute(query)
             db.session.commit()

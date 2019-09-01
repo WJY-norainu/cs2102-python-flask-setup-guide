@@ -152,7 +152,7 @@ def render_registration_page():
     if ...:
         ...
         else:
-            query = "INSERT INTO sample_table(name, preferred_name, password) VALUES ('{}', '{}', '{}')"\
+            query = "INSERT INTO web_user(username, preferred_name, password) VALUES ('{}', '{}', '{}')"\
                 .format(username, preferred_name, password)
             db.session.execute(query)
             db.session.commit()
@@ -195,7 +195,7 @@ With this class, the following codes can achieve the same purpose:
 ```
 # Create new user with plain SQL query
 insert_query = "INSERT INTO web_user VALUES('sample_username', NULL, 'sample_password')"
-db.session.execute("INSERT INTO")
+db.session.execute(insert_query)
 db.session.commit()
 # Create new user with WebUser model
 new_web_user = WebUser("sample_username", None, "sample_password")
