@@ -1,59 +1,63 @@
 from flask import Blueprint, redirect, render_template
 from flask_login import current_user, login_required, login_user
 
-from __init__ import db, login_manager
-from forms import SignUpForm, LogInForm
+from random import choice, randint
 
-view = Blueprint('view', __name__)
+from __init__ import db, login_manager
+from forms import LoginForm, RegistrationForm
+from models import WebUser
+
+view = Blueprint("view", __name__)
 
 
 @login_manager.user_loader
-def load_user(user_name):
-    query = '''SELECT 1 FROM sample_table WHERE sample_user.name = {}'''.format(user_name)
-    return db.session.execute(query).fetchone()
+def load_user(username):
+    user = WebUser.query.filter_by(username=username).first()
+    return user or current_user
 
 
-@view.route('/', methods=['GET'])
-def show_index():
-    return render_template('index.html')
+@view.route("/", methods=["GET"])
+def render_dummy_page():
+    return "<h1>CS2102</h1>\
+    <h2>Flask App started successfully!</h2>"
 
 
-@view.route('/signUp', methods=['GET', 'POST'])
-def show_sign_up():
-    form = SignUpForm()
-    print(form.name.data)
+@view.route("/registration", methods=["GET", "POST"])
+def render_registration_page():
+    form = RegistrationForm()
     if form.validate_on_submit():
-        name = form.name.data
+        username = form.username.data
         preferred_name = form.preferred_name.data
         password = form.password.data
-        exists_user = login_user(name)
+        query = "SELECT * FROM sample_table WHERE name = '{}'".format(username)
+        exists_user = db.session.execute(query).fetchone()
         if exists_user:
-            return '''{} has already signed up.'''.format(name)
+            form.username.errors.append("{} is already in use.".format(username))
         else:
-            query = '''INSERT INTO sample_table(name, preferred_name) VALUES ("{}", "{}", "{}")'''\
-                .format(name, preferred_name, password)
+            query = "INSERT INTO sample_table(name, preferred_name, password) VALUES ('{}', '{}', '{}')"\
+                .format(username, preferred_name, password)
             db.session.execute(query)
             db.session.commit()
-            return '''You have successfully signed up!'''
-    else:
-        return render_template('sign-up.html', form=form)
+            return "You have successfully signed up!"
+    return render_template("registration-simple.html", form=form)
 
 
-@view.route('/logIn', methods=['GET', 'POST'])
-def show_login():
-    form = LogInForm()
+@view.route("/login", methods=["GET", "POST"])
+def render_login_page():
+    form = LoginForm()
+    if form.is_submitted():
+        print("username entered:", form.username.data)
+        print("password entered:", form.password.data)
     if form.validate_on_submit():
-        name = form.name.data
-        exists_user = login_user(name)
-        if exists_user:
-            return redirect('/logInSuccess')
-        else:
-            return '''{} has not signed up yet. We cannot log you in.'''.format(name)
-    else:
-        return render_template('log-in.html', form=form)
+        user = WebUser.query.filter_by(username=form.username.data)
+        if user:
+            # TODO: You may want to verify if password is correct
+            login_user(user)
+            return redirect("/privileged-page")
+    return render_template("index.html", form=form)
 
 
-@view.route('/logInSuccess', methods=['GET'])
+@view.route("/privileged-page", methods=["GET"])
 @login_required
-def show_login_success():
-    return '''Congratulations, {}! You have successfully logged in!'''.format(current_user.preferred_name)
+def render_privileged_page():
+    return "<h1>Hello, {}!</h1>".format(current_user.preferred_name or current_user.username)

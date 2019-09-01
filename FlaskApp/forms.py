@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField
+from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, ValidationError
 
 
@@ -13,8 +13,8 @@ def agrees_terms_and_conditions(form, field):
         raise ValidationError('You must agree to the terms and conditions to sign up')
 
 
-class SignUpForm(FlaskForm):
-    name = StringField(
+class RegistrationForm(FlaskForm):
+    username = StringField(
         label='Name',
         validators=[InputRequired(), is_valid_name],
         render_kw={'placeholder': 'Name'}
@@ -29,20 +29,16 @@ class SignUpForm(FlaskForm):
         validators=[InputRequired()],
         render_kw={'placeholder': 'Password'}
     )
-    agreement = BooleanField(
-        label='Agreement',
-        validators=[agrees_terms_and_conditions]
-    )
 
 
-class LogInForm(FlaskForm):
-    name = StringField(
+class LoginForm(FlaskForm):
+    username = StringField(
         label='Name',
-        validators=[InputRequired(), is_valid_name],
-        render_kw={'placeholder': 'Name'}
+        validators=[InputRequired()],
+        render_kw={'placeholder': 'Name', 'class': 'input100'}
     )
     password = PasswordField(
         label='Password',
         validators=[InputRequired()],
-        render_kw={'placeholder': 'Password'}
+        render_kw={'placeholder': 'Password', 'class': 'input100'}
     )
