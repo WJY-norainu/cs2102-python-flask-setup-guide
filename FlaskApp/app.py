@@ -10,15 +10,15 @@ app.register_blueprint(view)
 
 
 # Config
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://{username}:{password}@{host}:{port}/{database}'\
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://{username}:{password}@{host}:{port}/{database}"\
     .format(
-        username='<username>',
-        password='<password>',
-        host='localhost',
+        username="<username>",
+        password="<password>",
+        host="localhost",
         port=<port number>,
-        database='<database_name>'
+        database="<database_name>"
     )
-app.config['SECRET_KEY'] = 'A random key to use CRF for forms'
+app.config["SECRET_KEY"] = "A random key to use flask extensions that require encryption"
 
 # Initialize other components
 db.init_app(app)
@@ -28,6 +28,6 @@ login_manager.init_app(app)
 if __name__ == "__main__":
     app.run(
         debug=True,
-        host='localhost',
+        host="localhost",
         port=5000
     )
